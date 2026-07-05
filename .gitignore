@@ -57,3 +57,10 @@ deps/openssl/openssl.xml
 /SHASUMS.txt*
 
 /tools/wrk/wrk
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+.env*
+!.env.example
