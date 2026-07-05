@@ -1,0 +1,32 @@
+name: Deploy website to Xserver
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - claude/website-migration-custom-domain-9xyaro
+    paths:
+      - 'website/**'
+      - '.github/workflows/deploy-xserver.yml'
+
+concurrency:
+  group: deploy-xserver
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Deploy via FTPS
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.XSERVER_FTP_HOST }}
+          username: ${{ secrets.XSERVER_FTP_USER }}
+          password: ${{ secrets.XSERVER_FTP_PASSWORD }}
+          protocol: ftps
+          local-dir: website/
+          server-dir: ${{ secrets.XSERVER_SERVER_DIR }}
+          exclude: |
+            **/README.md
