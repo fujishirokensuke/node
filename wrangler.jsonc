@@ -1,0 +1,21 @@
+{
+  // Body Recomp — Cloudflare Workers + D1 + 静的アセット
+  "name": "body-recomp",
+  "main": "src/index.js",
+  "compatibility_date": "2026-07-01",
+  "assets": {
+    "directory": "public",
+    "binding": "ASSETS"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "body-recomp",
+      // 本番の database_id。ローカル開発 (wrangler dev) では自動的にローカルSQLiteが使われる
+      "database_id": "58d8755b-5e25-4557-a698-9320ac17fdda"
+    }
+  ],
+  "observability": {
+    "enabled": true
+  }
+}

@@ -1,0 +1,2 @@
+# ローカル開発用。コピーして .dev.vars に (gitignore済み)
+AUTH_TOKEN=dev

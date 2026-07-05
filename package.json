@@ -1,0 +1,17 @@
+{
+  "name": "body-recomp",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Body Recomposition Project — 淡々と記録するための体重・生活ログ",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "db:schema:local": "wrangler d1 execute body-recomp --local --file=./schema.sql",
+    "db:seed:local": "wrangler d1 execute body-recomp --local --file=./seed.sql && wrangler d1 execute body-recomp --local --file=./history_seed.sql",
+    "db:schema:remote": "wrangler d1 execute body-recomp --remote --file=./schema.sql",
+    "db:seed:remote": "wrangler d1 execute body-recomp --remote --file=./seed.sql && wrangler d1 execute body-recomp --remote --file=./history_seed.sql"
+  },
+  "devDependencies": {
+    "wrangler": "^4.0.0"
+  }
+}

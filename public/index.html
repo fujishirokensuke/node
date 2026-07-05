@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>Body Recomp</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='6' fill='%23b8412c'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;1,400;1,600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<div id="auth-gate" hidden>
+  <div class="box">
+    <h1>Body Recomp</h1>
+    <p>パスコードを入力</p>
+    <input id="auth-input" type="password" autocomplete="current-password" placeholder="passcode">
+    <div class="err" id="auth-err"></div>
+    <button class="btn-primary" id="auth-btn">入る</button>
+  </div>
+</div>
+
+<header class="masthead">
+  <h1>Body Recomp</h1>
+  <span class="today" id="masthead-date"></span>
+</header>
+
+<main>
+
+  <!-- ============ 記録 ============ -->
+  <section class="view" id="view-record">
+    <p class="quiet-note" id="welcome-note" hidden></p>
+    <div class="card">
+      <div class="form-grid">
+        <div class="field">
+          <label for="f-date">日付</label>
+          <input type="date" id="f-date">
+        </div>
+
+        <div class="row2">
+          <div class="field">
+            <label for="f-weight">体重 (kg)</label>
+            <input type="text" inputmode="decimal" id="f-weight">
+          </div>
+          <div class="field">
+            <label>機種</label>
+            <div class="seg" id="f-scale">
+              <button type="button" data-v="horiuchi">堀内</button>
+              <button type="button" data-v="akiya">秋谷</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="field" id="f-bodyfat-wrap" hidden>
+          <label for="f-bodyfat">体脂肪率 (%) — 秋谷のみ</label>
+          <input type="text" inputmode="decimal" id="f-bodyfat">
+        </div>
+
+        <div class="field">
+          <label for="f-meal-b">朝食</label>
+          <textarea id="f-meal-b" rows="2"></textarea>
+        </div>
+        <div class="field">
+          <label for="f-meal-l">昼食</label>
+          <textarea id="f-meal-l" rows="2"></textarea>
+        </div>
+        <div class="field">
+          <label for="f-meal-d">夕食</label>
+          <textarea id="f-meal-d" rows="2"></textarea>
+        </div>
+        <div class="field">
+          <label for="f-meal-s">間食</label>
+          <textarea id="f-meal-s" rows="2"></textarea>
+        </div>
+
+        <div class="field">
+          <label>夜の炭水化物 (米・パン・麺)</label>
+          <div class="seg" id="f-carbs">
+            <button type="button" data-v="1">なし</button>
+            <button type="button" data-v="0">あり</button>
+            <button type="button" data-v="">未記録</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>酒</label>
+          <div class="seg" id="f-alcohol">
+            <button type="button" data-v="0">なし</button>
+            <button type="button" data-v="1">あり</button>
+            <button type="button" data-v="">未記録</button>
+          </div>
+        </div>
+        <div id="f-alcohol-detail-wrap" hidden>
+          <div class="row2">
+            <div class="field">
+              <label for="f-alcohol-detail">種類・量</label>
+              <input type="text" id="f-alcohol-detail" placeholder="ハイボール8% 350ml">
+            </div>
+            <div class="field">
+              <label for="f-alcohol-g">純アルコール (g)</label>
+              <input type="text" inputmode="decimal" id="f-alcohol-g" placeholder="22">
+            </div>
+          </div>
+          <details class="helper">
+            <summary>純アルコール換算の目安</summary>
+            <table>
+              <tr><td>ハイボール 7% 500ml</td><td>約28g</td></tr>
+              <tr><td>ハイボール 8% 350ml</td><td>約22g (推奨ライン)</td></tr>
+              <tr><td>ビール 5% 350ml</td><td>約14g</td></tr>
+              <tr><td>ワイン グラス1杯 120ml</td><td>約11g</td></tr>
+            </table>
+          </details>
+        </div>
+
+        <div class="field">
+          <label>運動</label>
+          <div class="seg" id="f-exercise">
+            <button type="button" data-v="0">なし</button>
+            <button type="button" data-v="1">あり</button>
+            <button type="button" data-v="">未記録</button>
+          </div>
+        </div>
+        <div class="field" id="f-exercise-detail-wrap" hidden>
+          <label for="f-exercise-detail">内容</label>
+          <input type="text" id="f-exercise-detail" placeholder="散歩 / ラン / 水泳 …">
+        </div>
+
+        <div class="field">
+          <label for="f-bowel">通便 (質と時刻、複数回は行分け)</label>
+          <textarea id="f-bowel" rows="2" placeholder="◎ 10:02"></textarea>
+          <div class="quick-btns" id="bowel-btns">
+            <button type="button" data-q="◎">◎</button>
+            <button type="button" data-q="◯">◯</button>
+            <button type="button" data-q="△">△</button>
+            <button type="button" data-q="✕">✕</button>
+          </div>
+        </div>
+
+        <div class="row3">
+          <div class="field">
+            <label for="f-sleep-start">就寝</label>
+            <input type="text" inputmode="numeric" id="f-sleep-start" placeholder="23:00">
+          </div>
+          <div class="field">
+            <label for="f-sleep-end">起床</label>
+            <input type="text" inputmode="numeric" id="f-sleep-end" placeholder="6:00">
+          </div>
+          <div class="field">
+            <label for="f-sleep-note">分断メモ</label>
+            <input type="text" id="f-sleep-note" placeholder="分断1h">
+          </div>
+        </div>
+
+        <div class="field">
+          <label>体感 <span class="feeling-value" id="feeling-value">—</span></label>
+          <input type="range" id="f-feeling" min="1" max="5" step="0.5" value="3">
+          <div class="helper-note">1 (どんより) 〜 5 (すこぶる良い)。未入力のままでもよい。</div>
+        </div>
+
+        <div class="field">
+          <label for="f-spending">生活費 (円) / 目安 6,000円</label>
+          <input type="text" inputmode="numeric" id="f-spending" placeholder="4500">
+        </div>
+
+        <div class="field">
+          <label>イベントタグ</label>
+          <div class="chips" id="f-events"></div>
+          <input type="text" id="f-events-free" placeholder="その他タグ (カンマ区切り)" style="margin-top:6px">
+        </div>
+
+        <div class="field">
+          <label for="f-note">メモ</label>
+          <textarea id="f-note" rows="2"></textarea>
+        </div>
+
+        <button class="btn-primary" id="save-btn">保存する</button>
+        <div class="save-status" id="save-status"></div>
+        <p class="helper-note">途中保存OK。朝に体重だけ入れて、夜に食事を追記できます。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 推移 ============ -->
+  <section class="view" id="view-chart">
+    <div class="tiles" id="tiles"></div>
+
+    <div class="filter-row" id="range-filter">
+      <button class="chip-btn" data-days="30">30日</button>
+      <button class="chip-btn" data-days="90">90日</button>
+      <button class="chip-btn selected" data-days="0">全期間</button>
+      <span class="basis">堀内基準 kg</span>
+    </div>
+
+    <div class="card chart-wrap">
+      <svg id="chart" role="img" aria-label="体重推移チャート（堀内基準）"></svg>
+      <div class="tooltip" id="chart-tooltip"></div>
+    </div>
+    <div class="legend">
+      <span><span class="key-dot" style="background:var(--data-gray)"></span>日次 (堀内換算)</span>
+      <span><span class="key-line" style="background:var(--accent)"></span>週平均 (主指標)</span>
+      <span>▾ イベント</span>
+    </div>
+    <p class="quiet-note">単日の上下は水分でいくらでも動く。見るのは週平均。</p>
+
+    <h2 class="section-title">今週のB運用</h2>
+    <div class="card" id="rules-card"></div>
+
+    <h2 class="section-title">長期 (2013–)</h2>
+    <p class="section-sub">年次平均と年内レンジ。過去の機種・条件はバラバラなので、傾向だけを見る。</p>
+    <div class="card chart-wrap">
+      <svg id="chart-long" role="img" aria-label="長期体重推移（年次平均）"></svg>
+      <div class="tooltip" id="long-tooltip"></div>
+    </div>
+    <p class="quiet-note">10年で68kgを切ったことは一度もない。70±1kgという目標は身体的に妥当な線。</p>
+  </section>
+
+  <!-- ============ 週次 ============ -->
+  <section class="view" id="view-weekly">
+    <h2 class="section-title">週次サマリー</h2>
+    <p class="section-sub">月曜〜日曜。数字はそのまま、評価はしない。</p>
+    <div id="weekly-list"></div>
+  </section>
+
+  <!-- ============ 台帳 ============ -->
+  <section class="view" id="view-ledger">
+    <h2 class="section-title">日次台帳</h2>
+    <p class="section-sub">タップで編集。※印は秋谷実測の堀内換算。</p>
+    <div class="card" id="ledger-list"></div>
+  </section>
+
+  <!-- ============ 設定 ============ -->
+  <section class="view" id="view-settings">
+    <h2 class="section-title">設定</h2>
+
+    <div class="card settings-block">
+      <h3>機種差の換算係数</h3>
+      <p>秋谷の実測から差し引いて堀内基準に換算する値。同日両機種計測が取れたら更新する。</p>
+      <div class="row2">
+        <div class="field">
+          <input type="text" inputmode="decimal" id="s-offset">
+        </div>
+        <button class="btn-secondary" id="s-offset-save">更新</button>
+      </div>
+      <div class="save-status" id="s-offset-status"></div>
+    </div>
+
+    <div class="card settings-block">
+      <h3>ゾーン (堀内基準)</h3>
+      <p>
+        DANGER ≥78 / WATCH 76–78 / PHASE 1 73–76 / GOAL 70–72<br>
+        目標: 8月末 71–72kg → 9月以降 70±1kg 維持。9月初頭に人間ドック。
+      </p>
+    </div>
+
+    <div class="card settings-block">
+      <h3>Apple Health 連携 (iOSショートカット)</h3>
+      <p>毎朝の自動化で、ヘルスケアの最新体重をこのアプリに送れます。</p>
+      <ol>
+        <li>ショートカット App → オートメーション → 「時刻」で毎朝 (例 9:00) を設定</li>
+        <li>アクション「ヘルスケアサンプルを検索」→ タイプ: 体重、並び順: 開始日 (最新)、上限 1</li>
+        <li>アクション「URLの内容を取得」を追加:
+          <pre id="hs-recipe"></pre>
+        </li>
+        <li>本文 (JSON) に日付・体重を変数で埋める。<code>scale</code> はその朝に乗った体重計 (akiya / horiuchi)</li>
+      </ol>
+      <p>手入力済みの日は上書きされません (未記録の日だけ埋まる)。</p>
+    </div>
+
+    <div class="card settings-block">
+      <h3>アクセス</h3>
+      <button class="btn-secondary" id="s-logout">この端末のパスコードを消去</button>
+    </div>
+  </section>
+
+</main>
+
+<nav class="tabbar">
+  <button data-view="record"><span class="glyph">✎</span>記録</button>
+  <button data-view="chart"><span class="glyph">〜</span>推移</button>
+  <button data-view="weekly"><span class="glyph">7</span>週次</button>
+  <button data-view="ledger"><span class="glyph">≡</span>台帳</button>
+  <button data-view="settings"><span class="glyph">⚙</span>設定</button>
+</nav>
+
+<script src="/app.js"></script>
+</body>
+</html>
